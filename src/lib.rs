@@ -155,7 +155,7 @@ impl Options {
 }
 
 /// The client struct that handles sending metrics to the Dogstatsd server.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Client {
     socket: Arc<UdpSocket>,
     to_addr: SocketAddr,
