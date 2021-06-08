@@ -158,7 +158,6 @@ impl Options {
 #[derive(Debug)]
 pub struct Client {
     socket: Arc<UdpSocket>,
-    from_addr: SocketAddr,
     to_addr: SocketAddr,
     namespace: String,
 }
@@ -176,7 +175,6 @@ impl Client {
     pub fn new(options: Options) -> Result<Self, DogstatsdError> {
         Ok(Client {
             socket: Arc::new(UdpSocket::bind(&options.from_addr)?),
-            from_addr: options.from_addr,
             to_addr: options.to_addr,
             namespace: options.namespace,
         })
