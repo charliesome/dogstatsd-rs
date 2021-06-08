@@ -162,15 +162,6 @@ pub struct Client {
     namespace: String,
 }
 
-impl PartialEq for Client {
-    fn eq(&self, other: &Self) -> bool {
-        // Ignore `socket`, which will never be the same
-        self.from_addr == other.from_addr &&
-        self.to_addr == other.to_addr &&
-        self.namespace == other.namespace
-    }
-}
-
 impl Client {
     /// Create a new client from an options struct.
     ///
@@ -448,19 +439,6 @@ mod tests {
         let expected_options = Options::new("127.0.0.1:0", "127.0.0.1:8125", "").unwrap();
 
         assert_eq!(expected_options, options)
-    }
-
-    #[test]
-    fn test_new() {
-        let client = Client::new(Options::default()).unwrap();
-        let expected_client = Client {
-            socket: UdpSocket::bind("127.0.0.1:0").unwrap(),
-            from_addr: ([127, 0, 0, 1], 0).into(),
-            to_addr: ([127, 0, 0, 1], 8125).into(),
-            namespace: String::new(),
-        };
-
-        assert_eq!(expected_client, client)
     }
 
     use metrics::GaugeMetric;
