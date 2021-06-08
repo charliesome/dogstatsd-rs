@@ -76,6 +76,7 @@ use chrono::Utc;
 use std::net::{UdpSocket, SocketAddr, ToSocketAddrs, Ipv4Addr};
 use std::borrow::Cow;
 use std::io;
+use std::sync::Arc;
 
 mod error;
 pub use self::error::DogstatsdError;
@@ -156,7 +157,7 @@ impl Options {
 /// The client struct that handles sending metrics to the Dogstatsd server.
 #[derive(Debug)]
 pub struct Client {
-    socket: UdpSocket,
+    socket: Arc<UdpSocket>,
     from_addr: SocketAddr,
     to_addr: SocketAddr,
     namespace: String,
@@ -174,7 +175,7 @@ impl Client {
     /// ```
     pub fn new(options: Options) -> Result<Self, DogstatsdError> {
         Ok(Client {
-            socket: UdpSocket::bind(&options.from_addr)?,
+            socket: Arc::new(UdpSocket::bind(&options.from_addr)?),
             from_addr: options.from_addr,
             to_addr: options.to_addr,
             namespace: options.namespace,
