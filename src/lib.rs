@@ -180,6 +180,15 @@ impl Client {
         })
     }
 
+    /// Creates a new client with a different namespace
+    pub fn with_namespace(&self, namespace: impl Into<String>) -> Self {
+        Client {
+            socket: self.socket.clone(),
+            to_addr: self.to_addr.clone(),
+            namespace: namespace.into(),
+        }
+    }
+
     /// Increment a StatsD counter
     ///
     /// # Examples
